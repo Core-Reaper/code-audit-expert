@@ -47,3 +47,19 @@ test_results/
 # Generated reports
 tech_stack_report.json
 audit_report_*.md
+
+# UX Audit reports
+ux_report_*.md
+lighthouse_results/
+axe_results/
+
+# Accessibility reports
+accessibility_report_*.md
+
+# Security scan results
+zap_reports/
+security_scan_*.md
+
+# Temporary files
+*.tmp
+.cache/

@@ -4,7 +4,7 @@
 整合技术栈扫描、函数分析、问题检测,生成完整审计报告
 
 作者: by_皓月
-版本: v1.1
+版本: v3.0
 日期: 2026-05-19
 """
 
@@ -190,13 +190,13 @@ class AuditReportGenerator:
         report_lines.append("### 审计范围")
         report_lines.append(f"- 项目名称: {self.project_name}")
         report_lines.append(f"- 审计时间: {datetime.now().strftime('%Y-%m-%d')}")
-        report_lines.append(f"- 审计工具版本: Code Audit Expert v1.0")
+        report_lines.append(f"- 审计工具版本: Code Audit Expert v3.0")
         report_lines.append("")
         report_lines.append("### 审计方法")
         report_lines.append("- 技术栈自动化扫描")
         report_lines.append("- 逐行代码深度分析")
         report_lines.append("- 函数8要点详细审查")
-        report_lines.append("- 7维度全量问题检测")
+        report_lines.append("- 20维度全场景审计（10技术+10UX）")
         report_lines.append("- 无侵入式修复建议")
         report_lines.append("")
         

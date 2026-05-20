@@ -1,0 +1,49 @@
+name: 📚 文档改进
+description: 提出文档方面的改进建议
+title: "[Docs] "
+labels: ["documentation"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您帮助改进文档！
+        
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: 文档类型
+      description: 需要改进的文档类型
+      options:
+        - README.md
+        - SKILL.md
+        - QUICK_START.md
+        - CHANGELOG.md
+        - CONTRIBUTING.md
+        - 其他
+    validations:
+      required: true
+      
+  - type: textarea
+    id: current
+    attributes:
+      label: 当前问题
+      description: 当前文档存在什么问题？
+      placeholder: 例如：说明不够清晰、缺少示例、有错别字等
+    validations:
+      required: true
+      
+  - type: textarea
+    id: improvement
+    attributes:
+      label: 改进建议
+      description: 您建议如何改进
+      placeholder: 清晰简洁地描述您的改进建议
+    validations:
+      required: true
+      
+  - type: textarea
+    id: additional
+    attributes:
+      label: 附加上下文
+      description: 在此处添加任何其他上下文

@@ -153,6 +153,88 @@ python ~/.lingma/skills/code-audit-expert/scripts/validate_fix.py \
 
 ---
 
+### 工具5: ux_audit.py - UX专项审计 ⚠️ 实验性功能
+
+**用途**: 前端用户体验审计（部分功能待实现）
+
+**已实现功能**:
+- ✅ UX-1: 页面加载与渲染体验审计
+- ✅ UX-2: 用户操作反馈体验审计
+- ✅ UX-5: 自动化流程与页面跳转体验审计
+
+**待实现功能**:
+- ⏳ UX-3 ~ UX-4, UX-6 ~ UX-10（建议手动检查或使用 Lighthouse + axe-core）
+- ⏳ Lighthouse/axe-core 结果自动整合
+
+**用法**:
+```bash
+# 基本用法（跳过外部工具）
+python ~/.lingma/skills/code-audit-expert/scripts/ux_audit.py \
+  --project /path/to/frontend \
+  --skip-lighthouse --skip-axe
+
+# 指定 URL 进行审计
+python ~/.lingma/skills/code-audit-expert/scripts/ux_audit.py \
+  --url https://example.com \
+  --priority P0,P1
+```
+
+**输出**: Markdown格式UX审计报告
+
+---
+
+## 🔧 完整审计工作流示例
+
+### 场景1: 完整项目审计
+
+```bash
+# 步骤1: 验证安装
+python scripts/verify_installation.py
+
+# 步骤2: 扫描技术栈
+python scripts/scan_project.py /path/to/project
+# 输出: tech_stack_report.json
+
+# 步骤3: 深度分析关键函数
+python scripts/check_function.py \
+  --file src/auth/login.py \
+  --function authenticate_user
+
+# 步骤4: 生成审计报告
+python scripts/generate_audit_report.py \
+  --project "MyProject" \
+  --tech-stack tech_stack_report.json \
+  --output-dir ./reports
+
+# 步骤5: UX审计（前端项目）
+python scripts/ux_audit.py \
+  --url https://myapp.com \
+  --priority P0,P1 \
+  --skip-lighthouse --skip-axe
+```
+
+### 场景2: 快速单文件审计
+
+```bash
+# 直接分析单个文件的关键函数
+python scripts/check_function.py \
+  --file src/api/users.py \
+  --function get_user_list \
+  --output function_report.md
+```
+
+### 场景3: 修复验证
+
+```bash
+# 验证修复是否符合最小侵入原则
+python scripts/validate_fix.py \
+  --before login_before.py \
+  --after login_after.py \
+  --output validation_report.md
+```
+
+---
+
 ## 核心特性
 
 ### 1. 技术栈精准识别

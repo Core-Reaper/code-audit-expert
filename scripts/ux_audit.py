@@ -364,15 +364,21 @@ class UXAuditor:
         print(f"📜 发现 {len(js_files)} 个 JavaScript 文件")
         print()
         
-        # 执行各维度检查
+        # 执行已实现的维度检查
         self.findings.extend(self.check_ux_dimension_1_loading(html_files))
         self.findings.extend(self.check_ux_dimension_2_feedback(js_files))
         self.findings.extend(self.check_ux_dimension_5_redirect(js_files))
         
-        # TODO: 添加其他维度检查
-        # self.findings.extend(self.check_ux_dimension_3_form())
-        # self.findings.extend(self.check_ux_dimension_4_list())
-        # ...
+        # ⚠️ 注意：以下维度检查尚未实现（实验性功能）
+        # UX-3: 表单录入与文件上传体验审计
+        # UX-4: 列表表格业务视图体验审计  
+        # UX-6: 弹窗模态框交互体验审计
+        # UX-7: 异常场景与边界体验审计
+        # UX-8: 细节易用性与视觉规范审计
+        # UX-9: 实时数据同步体验审计
+        # UX-10: 前端体验稳定性与规范落地审计
+        # 
+        # 如需完整UX审计，建议手动检查或使用 Lighthouse + axe-core
         
         print(f"\n✅ UX 审计完成，共发现 {len(self.findings)} 个问题")
         return self.findings
@@ -550,10 +556,12 @@ def main():
                 print("❌ Lighthouse 安装失败，跳过性能审计")
             else:
                 lighthouse_data = lighthouse_runner.run_audit(args.url)
-                # TODO: 解析 Lighthouse 结果并转换为 findings
+                # ⚠️ Lighthouse结果解析功能待实现
+                print("⚠️  Lighthouse结果解析功能尚未实现，跳过性能数据整合")
         else:
             lighthouse_data = lighthouse_runner.run_audit(args.url)
-            # TODO: 解析 Lighthouse 结果并转换为 findings
+            # ⚠️ Lighthouse结果解析功能待实现
+            print("⚠️  Lighthouse结果解析功能尚未实现，跳过性能数据整合")
     
     # 3. 执行 axe-core 无障碍检查
     if args.url and not args.skip_axe:
@@ -565,10 +573,12 @@ def main():
                 print("❌ axe-core CLI 安装失败，跳过无障碍检查")
             else:
                 violations = axe_checker.check_accessibility(args.url)
-                # TODO: 将 violations 转换为 findings
+                # ⚠️ axe-core结果转换功能待实现
+                print("⚠️  axe-core结果转换功能尚未实现，跳过无障碍数据整合")
         else:
             violations = axe_checker.check_accessibility(args.url)
-            # TODO: 将 violations 转换为 findings
+            # ⚠️ axe-core结果转换功能待实现
+            print("⚠️  axe-core结果转换功能尚未实现，跳过无障碍数据整合")
     
     # 4. 优先级过滤
     if args.priority != 'all':

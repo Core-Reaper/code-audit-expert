@@ -14,6 +14,25 @@ import json
 from pathlib import Path
 from typing import Dict, List, Optional
 
+# Python 3.8 兼容性：ast.unparse 仅在 3.9+ 可用
+if sys.version_info >= (3, 9):
+    def ast_unparse(node):
+        return ast.unparse(node)
+else:
+    def ast_unparse(node):
+        """Python 3.8 兼容版本"""
+        if node is None:
+            return ""
+        # 简单处理常见类型
+        if isinstance(node, ast.Name):
+            return node.id
+        elif isinstance(node, ast.Constant):
+            return str(node.value)
+        elif isinstance(node, ast.Attribute):
+            return f"{ast_unparse(node.value)}.{node.attr}"
+        else:
+            return "<annotation>"
+
 
 class FunctionAnalyzer:
     """函数分析器"""
@@ -97,7 +116,7 @@ class FunctionAnalyzer:
         # 获取返回值类型注解
         return_annotation = "未标注"
         if func.returns:
-            return_annotation = ast.unparse(func.returns) if hasattr(ast, 'unparse') else "已标注"
+            return_annotation = ast_unparse(func.returns) if func.returns else "未标注"
         
         return {
             "函数名": func.name,
@@ -121,7 +140,7 @@ class FunctionAnalyzer:
             
             param_info = {
                 "参数名": arg.arg,
-                "类型": ast.unparse(arg.annotation) if arg.annotation else "未标注",
+                "类型": ast_unparse(arg.annotation) if arg.annotation else "未标注",
                 "默认值": "无默认值(必填)",
                 "参数校验": "需手动检查代码"
             }
@@ -130,7 +149,7 @@ class FunctionAnalyzer:
             defaults_offset = len(args.args) - len(args.defaults)
             if i >= defaults_offset:
                 default_idx = i - defaults_offset
-                param_info["默认值"] = ast.unparse(args.defaults[default_idx])
+                param_info["默认值"] = ast_unparse(args.defaults[default_idx])
             
             params.append(param_info)
         
@@ -181,12 +200,12 @@ class FunctionAnalyzer:
         # 简化版:提取关键语句
         for node in ast.iter_child_nodes(func):
             if isinstance(node, ast.Assign):
-                targets = ", ".join(ast.unparse(t) for t in node.targets)
+                targets = ", ".join(ast_unparse(t) for t in node.targets)
                 logic_steps.append(f"赋值: {targets} = ...")
             elif isinstance(node, ast.If):
                 logic_steps.append(f"条件判断: if ...")
             elif isinstance(node, ast.For):
-                target = ast.unparse(node.target)
+                target = ast_unparse(node.target)
                 logic_steps.append(f"循环: for {target} in ...")
             elif isinstance(node, ast.While):
                 logic_steps.append(f"循环: while ...")
@@ -209,7 +228,7 @@ class FunctionAnalyzer:
             if isinstance(node, ast.Try):
                 handlers = []
                 for handler in node.handlers:
-                    exc_type = ast.unparse(handler.type) if handler.type else "所有异常"
+                    exc_type = ast_unparse(handler.type) if handler.type else "所有异常"
                     handlers.append(exc_type)
                 
                 try_blocks.append({
@@ -240,7 +259,7 @@ class FunctionAnalyzer:
                     call_info["调用对象"] = node.func.id
                 elif hasattr(node.func, 'attr'):
                     call_info["调用类型"] = "方法调用"
-                    call_info["调用对象"] = ast.unparse(node.func)
+                    call_info["调用对象"] = ast_unparse(node.func)
                 
                 calls.append(call_info)
         
